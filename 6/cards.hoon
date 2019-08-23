@@ -12,8 +12,9 @@
 :-  %noun
 ::  use the cards core here
 ::
-=<  =~  (new-deal new-deck)
+=<  =~  (deal-game [new-deck new-hands])
       (deal-hands [x y])
+      hands
     ==
 ::  define the cards core
 ::
@@ -36,41 +37,39 @@
       '♥K'  '♦K'  '♣K'  '♠K'
       '♥A'  '♦A'  '♣A'  '♠A'
   ==
+::  leg that stores an empty list of hands
+::
+++  new-hands  (list (list @t))
 ::  arm that produces a door
 ::
-++  new-deal
-  ::  hands is the data to be produced, stateful
-  ::  deck is the list of cards, stateful
+++  deal-game
+  ::  deck is the list of cards
+  ::  hands is the list of hands
+  ::  x is the number of hands
+  ::  y is the number of cards in each hand
   ::
-  |_  [hands=(list (list @t)) deck=(list @t)]
-  ::  deals x hands of y distinct cards
+  |_  [deck=(list @t) hands=(list (list @t))]
+  ::  arm to deal hands
   ::
   ++  deal-hands
     |=  [x=@ud y=@ud]
-    ::  produce a list of hands as a (list (list @t))
-    ::
     ^-  (list (list @t))
-    ::  cal
-  ::  deals a hand of y distinct cards
-  ::
+    ?:  (gth (mul x y) (lent deck))
+      ~&  'not enough cards in the deck'  !!
+    ?&  =(x 0)
+      =(y 0)
+    hands
+    ?&  (gth x 0)
+      =(y 0)
+    +>.$(hands (weld ~[hands (deal-hand y)]))
   ++  deal-hand
-    |=  y=@ud
+    |=  [y=@ud]
     ^-  (list @t)
     =/  hand=(list @t)
-    =/  rng  ~(. og eny)
     |-
     ?:  =(y 0)
       hand
-    $(y (dec y), hand (weld ~[(deal-card (rad:rng (lent deck)))]))
-  ::  deals a single card
-  ::
+    $(hand (weld hand (deal-card)), y (dec y))
   ++  deal-card
-    ::  accepts an index n to snag a card from the deck
-    ::
-    |=  n=@ud
-    ::  produce a card as a cord
-    ::
-    ^-  @t
-
   --
 --
