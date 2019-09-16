@@ -9,11 +9,11 @@
 =<  hands:(deal-hands [x y eny])
 |%
 +$  suit  @t
-+$  rank  @t
++$  rank  @ud
 +$  cart  [s=suit r=rank]
 +$  deck  (list cart)
 ++  suits  %-  limo  ~['♥' '♠' '♣' '♦']
-++  ranks  %-  limo  ~['A' '2' '3' '4' '5' '6' '7' '8' '9' '10' 'J' 'Q' 'K']
+++  ranks  %-  limo  ~[1 2 3 4 5 6 7 8 9 10 11 12 13]
 ++  make-deck
   ^-  deck
   =|  new-deck=deck
