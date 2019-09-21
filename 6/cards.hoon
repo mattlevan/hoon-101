@@ -27,7 +27,7 @@
     ^$(i +(i))
   %=  $
     j         +(j)
-    new-deck  [(num-to-suit i) (num-to-rank j)]^new-deck
+    new-deck  [(num-to-suit i) j]^new-deck
   ==
 ++  num-to-suit
   |=  n=@ud
@@ -35,12 +35,13 @@
   ?:  (gth n 4)
     !!
   (snag (dec n) suits)
-++  num-to-rank
-  |=  n=@ud
-  ^-  rank
-  ?:  (gth n 13)
-    !!
-  (snag (dec n) ranks)
+::  @TODO: replace with gate which converts num to tape
+::  ++  num-to-rank
+::    |=  n=@ud
+::    ^-  rank
+::    ?:  (gth n 13)
+::      !!
+::    (snag (dec n) ranks)
 ++  shuffle-deck
   |=  [unshuffled=deck e=@uvJ]
   ^-  deck
